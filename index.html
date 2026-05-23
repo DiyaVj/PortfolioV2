@@ -288,6 +288,19 @@ nav {
 .hex-cell .lbl { font-family: 'Share Tech Mono', monospace; font-size: 0.5rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--grey-light); text-align: center; line-height: 1.3; }
 .hex-cell:hover .lbl { color: var(--pink); }
 
+/* About carousel (images only used in About section) */
+.about-carousel { width: 100%; max-width: 420px; margin: 0 auto; position: relative; overflow: hidden; border-radius: 8px; min-height: 240px; }
+.about-carousel .carousel-track { display: flex; transition: transform 0.5s ease; }
+.about-carousel .carousel-img { width: 100%; height: 240px; object-fit: cover; flex-shrink: 0; display: block; }
+.about-carousel .carousel-controls { position: absolute; top: 50%; left: 0; right: 0; display:flex; justify-content:space-between; transform: translateY(-50%); padding: 0 8px; }
+.about-carousel .carousel-controls button { background: rgba(0,0,0,0.5); border: none; color: white; width:36px; height:36px; border-radius:50%; font-size:20px; cursor:pointer; }
+@media(max-width:900px){
+  .stat-grid { grid-template-columns: 1fr; }
+  .about-carousel { max-width: 100%; }
+  .about-carousel .carousel-img { height: 220px; }
+}
+
+
 .exp-list { display: flex; flex-direction: column; gap: 2px; }
 .exp-item {
   background: var(--panel);
@@ -593,6 +606,33 @@ footer {
         <div class="stat-cell"><div class="stat-num">Featured</div><div class="stat-lbl">Billboard Times Square</div></div>
       </div>
     </div>
+    <div class="reveal d2">
+      <div class="about-carousel" aria-roledescription="carousel">
+        <div class="carousel-track">
+          <img class="carousel-img" src="assets/cnnfeaturing.png" alt="Featured coverage" />
+          <img class="carousel-img" src="assets/finbudaward.png" alt="Finbud award" />
+          <img class="carousel-img" src="assets/goldrecommendationletter.png" alt="Recommendation letter" />
+          <img class="carousel-img" src="assets/ssftcerti.png" alt="Samsung Solve for Tomorrow certificate" />
+          <img class="carousel-img" src="assets/billboard.png" alt="Billboard feature" />
+          <img class="carousel-img" src="assets/gwocCerti.png" alt="GWOC certificate" />
+          <img class="carousel-img" src="assets/istartcerti.png" alt="Istart Ideathon certificate" />
+          <img class="carousel-img" src="assets/shankaraHackathon.png" alt="Shankara Hackathon award" />
+          <img class="carousel-img" src="assets/WGMITTeam.png" alt="Women and Gender Minorities in Tech team" />
+          <img class="carousel-img" src="assets/abhinavAwasthi.png" alt="Abhinav Awasthi feature" />
+          <img class="carousel-img" src="assets/communitytalk.png" alt="Community talk" />
+          <img class="carousel-img" src="assets/mic.png" alt="Mic event feature" />
+          <img class="carousel-img" src="assets/reactor.png" alt="Reactor feature" />
+          <img class="carousel-img" src="assets/sepideh.png" alt="Sepideh feature" />
+          <img class="carousel-img" src="assets/shankara.png" alt="Shankara feature" />
+          <img class="carousel-img" src="assets/wgmit.png" alt="WGMiT feature" />
+          <img class="carousel-img" src="assets/youtube.png" alt="YouTube feature" />
+        </div>
+        <div class="carousel-controls">
+          <button class="prev" aria-label="Previous">‹</button>
+          <button class="next" aria-label="Next">›</button>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -818,6 +858,15 @@ footer {
     <span class="skill-pill">Postman Student Leader</span>
     <span class="skill-pill">WICCI Rajasthan IT Council State President</span>
   </div>
+  
+  <div class="reveal" style="margin-top:18px;">
+    <a href="https://www.businesstalkz.com/2024/11/top-icons-of-india-magazine-edition-42.html" target="_blank" rel="noopener noreferrer" style="display:flex;align-items:center;gap:14px;text-decoration:none;">
+      <div>
+        <div style="font-family: 'Orbitron', sans-serif; font-weight:700; color:var(--white); margin-bottom:6px;">Featured: Top Icons of India — Edition 42</div>
+        <div style="color:var(--grey-light); font-size:0.95rem;">Featured in Business Talkz magazine (Top Icons of India). Read the feature.</div>
+      </div>
+    </a>
+  </div>
 </section>
 
 <section id="contact" class="section">
@@ -1036,6 +1085,30 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     document.querySelector(a.getAttribute('href'))?.scrollIntoView({ behavior: 'smooth' });
   });
 });
+</script>
+<script>
+// Simple about-section carousel
+;(function(){
+  const track = document.querySelector('.about-carousel .carousel-track');
+  if(!track) return;
+  const slides = Array.from(track.querySelectorAll('.carousel-img'));
+  const prev = document.querySelector('.about-carousel .prev');
+  const next = document.querySelector('.about-carousel .next');
+  let idx = 0; let timer = null;
+  function update() { track.style.transform = `translateX(-${idx * 100}%)`; }
+  function goNext(){ idx = (idx+1) % slides.length; update(); }
+  function goPrev(){ idx = (idx-1+slides.length) % slides.length; update(); }
+  next?.addEventListener('click', ()=>{ goNext(); resetTimer(); });
+  prev?.addEventListener('click', ()=>{ goPrev(); resetTimer(); });
+  function resetTimer(){ clearInterval(timer); timer = setInterval(goNext, 4000); }
+  // pause on hover
+  const container = document.querySelector('.about-carousel');
+  container.addEventListener('mouseenter', ()=> clearInterval(timer));
+  container.addEventListener('mouseleave', resetTimer);
+  // init
+  slides.forEach(s=> s.style.minWidth = '100%');
+  update(); resetTimer();
+})();
 </script>
 </body>
 </html>
